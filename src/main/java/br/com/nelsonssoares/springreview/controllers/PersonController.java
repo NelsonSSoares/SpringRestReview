@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value="/person", produces = "application/json", consumes = "application/json")
@@ -16,7 +17,7 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping("/{id}")
-    public Person findById(@PathVariable("id") String id) {
+    public Optional<Person> findById(@PathVariable("id") Long id) {
         return personService.findById(id);
     }
 
@@ -36,7 +37,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") String id) {
+    public void delete(@PathVariable("id") Long id) {
         personService.delete(id);
     }
 

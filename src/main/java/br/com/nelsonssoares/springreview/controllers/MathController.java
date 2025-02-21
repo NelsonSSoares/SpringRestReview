@@ -1,6 +1,6 @@
 package br.com.nelsonssoares.springreview.controllers;
 
-import br.com.nelsonssoares.springreview.exceptions.UnsuportedMathOperation;
+import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ public class MathController {
     public Double sum(@PathVariable(value = "numberOne") String numberOne,
                       @PathVariable(value = "numberTwo") String numberTwo) {
         if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsuportedMathOperation("Please set a numeric value!");
+            throw new ResourceNotFoundException("Please set a numeric value!");
 
         }
         return convertToDouble(numberOne) + convertToDouble(numberTwo);
@@ -28,7 +28,7 @@ public class MathController {
     public Double minus(@PathVariable(value = "numberOne") String numberOne,
                       @PathVariable(value = "numberTwo") String numberTwo) {
         if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsuportedMathOperation("Please set a numeric value!");
+            throw new ResourceNotFoundException("Please set a numeric value!");
 
         }
         return convertToDouble(numberOne) - convertToDouble(numberTwo);
@@ -38,7 +38,7 @@ public class MathController {
     public Double division(@PathVariable(value = "numberOne") String numberOne,
                       @PathVariable(value = "numberTwo") String numberTwo) {
         if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsuportedMathOperation("Please set a numeric value!");
+            throw new ResourceNotFoundException("Please set a numeric value!");
 
         }
         return convertToDouble(numberOne) / convertToDouble(numberTwo);
@@ -48,7 +48,7 @@ public class MathController {
     public Double avarege(@PathVariable(value = "numberOne") String numberOne,
                            @PathVariable(value = "numberTwo") String numberTwo) {
         if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsuportedMathOperation("Please set a numeric value!");
+            throw new ResourceNotFoundException("Please set a numeric value!");
 
         }
         return (convertToDouble(numberOne) + convertToDouble(numberTwo)) / 2;
@@ -57,7 +57,7 @@ public class MathController {
     @GetMapping("/squareRoot/{number}")
     public Double squareRoot(@PathVariable(value = "number") String number) {
         if(!isNumeric(number)) {
-            throw new UnsuportedMathOperation("Please set a numeric value!");
+            throw new ResourceNotFoundException("Please set a numeric value!");
 
         }
         return Math.sqrt(convertToDouble(number));
@@ -66,7 +66,7 @@ public class MathController {
 
     private Double convertToDouble(String strNumber) {
         if(strNumber == null || strNumber.isEmpty()) {
-            throw new UnsuportedMathOperation("Please set a numeric value!");
+            throw new ResourceNotFoundException("Please set a numeric value!");
         }
         String number = strNumber.replace(",", ".");
 
