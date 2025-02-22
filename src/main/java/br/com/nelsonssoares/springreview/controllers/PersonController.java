@@ -3,6 +3,7 @@ package br.com.nelsonssoares.springreview.controllers;
 import br.com.nelsonssoares.springreview.models.Person;
 import br.com.nelsonssoares.springreview.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class PersonController {
         return personService.findById(id);
     }
 
-    @GetMapping
+    @GetMapping()
     public List<Person> findAll(){
         return personService.findAll();
     }
@@ -37,8 +38,9 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         personService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
