@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value="/person", produces = "application/json", consumes = "application/json")
+@RequestMapping(value="/person", produces = "application/json")
 public class PersonController {
 
 
@@ -32,8 +32,8 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public Person update(@PathVariable("id") String id, @RequestBody Person person) {
-        return personService.update(person);
+    public Person update(@PathVariable("id") Long id, @RequestBody Person person) {
+        return personService.update(id, person);
     }
 
     @DeleteMapping("/{id}")
