@@ -1,13 +1,13 @@
 spring:
   application:
     name: springreview
-
+# Configuração do banco de dados
   datasource:
     url: jdbc:mysql://localhost:3306/person?serverTimezone=UTC
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-
+# Configuração do JPA
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,3 +15,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  # Configuração de log
+  logging:
+    level:
+      # root: INFO
+      br.com.nelsonssoares.springreview: DEBUG

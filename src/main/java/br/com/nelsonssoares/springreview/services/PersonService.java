@@ -4,6 +4,8 @@ import br.com.nelsonssoares.springreview.controllers.PersonController;
 import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
 import br.com.nelsonssoares.springreview.models.Person;
 import br.com.nelsonssoares.springreview.repositories.PersonRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,14 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Logger;
+
 
 //@RequiredArgsConstructor
 @Service
 public class PersonService {
 
     private final AtomicLong counter = new AtomicLong();
-    private Logger logger = Logger.getLogger(PersonController.class.getName());
+    private Logger logger = LoggerFactory.getLogger(PersonController.class.getName());
 
     @Autowired
     private PersonRepository repository ;
