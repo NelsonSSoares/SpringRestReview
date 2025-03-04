@@ -19,6 +19,6 @@ spring:
   logging:
     level:
       # Nivel Global de Log
-      root: INFO
+      #root: INFO
       # Nivel de Log para package especifico
       #br.com.nelsonssoares.springreview: DEBUG

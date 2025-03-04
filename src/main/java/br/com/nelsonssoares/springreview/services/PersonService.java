@@ -2,8 +2,8 @@ package br.com.nelsonssoares.springreview.services;
 
 import br.com.nelsonssoares.springreview.controllers.PersonController;
 import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
-import br.com.nelsonssoares.springreview.models.Person;
-import br.com.nelsonssoares.springreview.repositories.PersonRepository;
+import br.com.nelsonssoares.springreview.domain.models.Person;
+import br.com.nelsonssoares.springreview.domain.repositories.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package br.com.nelsonssoares.springreview.controllers;
 
-import br.com.nelsonssoares.springreview.models.Person;
+import br.com.nelsonssoares.springreview.domain.models.Person;
 import br.com.nelsonssoares.springreview.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
