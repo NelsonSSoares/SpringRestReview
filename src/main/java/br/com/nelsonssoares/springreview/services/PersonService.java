@@ -6,6 +6,7 @@ import br.com.nelsonssoares.springreview.domain.dtos.v2.PersonDTOV2;
 import br.com.nelsonssoares.springreview.domain.models.Person;
 import br.com.nelsonssoares.springreview.domain.repositories.PersonRepository;
 import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
+import br.com.nelsonssoares.springreview.utils.mapper.custom.PersonMapperV2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class PersonService {
     private final AtomicLong counter = new AtomicLong();
     private Logger logger = LoggerFactory.getLogger(PersonController.class.getName());
 
-
+    @Autowired
+    private PersonMapperV2 converter;
 
     @Autowired
     private PersonRepository repository ;
@@ -91,6 +93,6 @@ public class PersonService {
         logger.info("Creating person V2: " + person.toString());
         var entity = parseObject(person, Person.class);
         //repository.save(entity);
-        return parseObject(repository.save(entity), PersonDTOV2.class);
+        return converter.convertEntityToDTO(repository.save(entity));
     }
 }

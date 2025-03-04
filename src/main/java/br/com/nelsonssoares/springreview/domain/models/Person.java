@@ -3,6 +3,7 @@ package br.com.nelsonssoares.springreview.domain.models;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -27,6 +28,9 @@ public class Person implements Serializable {
 
     @Column(nullable = false, length = 6)
     private String gender;
+
+    @Column()
+    private Date birthDate;
 
 
     public Person() {
