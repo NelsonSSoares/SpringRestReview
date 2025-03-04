@@ -1,4 +1,4 @@
-package br.com.nelsonssoares.springreview.domain.dto;
+package br.com.nelsonssoares.springreview.domain.dtos.v1;
 
 import java.io.Serializable;
 import java.util.Objects;

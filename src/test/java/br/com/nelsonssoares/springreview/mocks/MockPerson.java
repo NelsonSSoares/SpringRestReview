@@ -1,6 +1,6 @@
 package br.com.nelsonssoares.springreview.mocks;
 
-import br.com.nelsonssoares.springreview.domain.dto.PersonDTO;
+import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
 import br.com.nelsonssoares.springreview.domain.models.Person;
 
 import java.util.ArrayList;

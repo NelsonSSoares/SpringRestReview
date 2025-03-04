@@ -1,11 +1,11 @@
 package br.com.nelsonssoares.springreview.services;
 
 import br.com.nelsonssoares.springreview.controllers.PersonController;
-import br.com.nelsonssoares.springreview.domain.dto.PersonDTO;
-import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
+import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
+import br.com.nelsonssoares.springreview.domain.dtos.v2.PersonDTOV2;
 import br.com.nelsonssoares.springreview.domain.models.Person;
 import br.com.nelsonssoares.springreview.domain.repositories.PersonRepository;
-import br.com.nelsonssoares.springreview.utils.mapper.ObjectMapper;
+import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +62,14 @@ public class PersonService {
     }
 
     public PersonDTO create(PersonDTO person) {
-        logger.info("Creating person: " + person);
+        logger.info("Creating person: " + person.toString());
         var entity = parseObject(person, Person.class);
         //repository.save(entity);
         return parseObject(repository.save(entity), PersonDTO.class);
     }
 
     public PersonDTO update(Long id, PersonDTO person) {
-        logger.info("Updating person: " + person);
+        logger.info("Updating person: " + person.toString());
         Person entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No person found"));
         entity.setFirstName(person.getFirstName());
@@ -85,5 +85,12 @@ public class PersonService {
         Person entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No person found"));
         repository.deleteById(entity.getId());
+    }
+
+    public PersonDTOV2 createV2(PersonDTOV2 person) {
+        logger.info("Creating person V2: " + person.toString());
+        var entity = parseObject(person, Person.class);
+        //repository.save(entity);
+        return parseObject(repository.save(entity), PersonDTOV2.class);
     }
 }

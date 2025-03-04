@@ -1,7 +1,7 @@
 package br.com.nelsonssoares.springreview.controllers;
 
-import br.com.nelsonssoares.springreview.domain.dto.PersonDTO;
-import br.com.nelsonssoares.springreview.domain.models.Person;
+import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
+import br.com.nelsonssoares.springreview.domain.dtos.v2.PersonDTOV2;
 import br.com.nelsonssoares.springreview.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +42,11 @@ public class PersonController {
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         personService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/v2")
+    public PersonDTOV2 createV2(@RequestBody PersonDTOV2 person) {
+        return personService.createV2(person);
     }
 
 }

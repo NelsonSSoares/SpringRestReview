@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 
-import br.com.nelsonssoares.springreview.domain.dto.PersonDTO;
+import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
 import br.com.nelsonssoares.springreview.domain.models.Person;
 import br.com.nelsonssoares.springreview.mocks.MockPerson;
 import org.junit.jupiter.api.BeforeEach;
