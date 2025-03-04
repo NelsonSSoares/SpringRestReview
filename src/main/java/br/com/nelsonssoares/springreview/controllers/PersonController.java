@@ -1,5 +1,6 @@
 package br.com.nelsonssoares.springreview.controllers;
 
+import br.com.nelsonssoares.springreview.domain.dto.PersonDTO;
 import br.com.nelsonssoares.springreview.domain.models.Person;
 import br.com.nelsonssoares.springreview.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +19,22 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping("/{id}")
-    public Optional<Person> findById(@PathVariable("id") Long id) {
+    public Optional<PersonDTO> findById(@PathVariable("id") Long id) {
         return personService.findById(id);
     }
 
     @GetMapping()
-    public List<Person> findAll(){
+    public List<PersonDTO> findAll(){
         return personService.findAll();
     }
 
     @PostMapping
-    public Person create(@RequestBody Person person) {
+    public PersonDTO create(@RequestBody PersonDTO person) {
         return personService.create(person);
     }
 
     @PutMapping("/{id}")
-    public Person update(@PathVariable("id") Long id, @RequestBody Person person) {
+    public PersonDTO update(@PathVariable("id") Long id, @RequestBody PersonDTO person) {
         return personService.update(id, person);
     }
 
