@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value="/person", produces = "application/json")
+@RequestMapping(value="api/person/v1", produces = "application/json")
 public class PersonController {
 
 
@@ -44,9 +44,9 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/v2")
-    public PersonDTOV2 createV2(@RequestBody PersonDTOV2 person) {
-        return personService.createV2(person);
-    }
+//    @PostMapping("/v2")
+//    public PersonDTOV2 createV2(@RequestBody PersonDTOV2 person) {
+//        return personService.createV2(person);
+//    }
 
 }
