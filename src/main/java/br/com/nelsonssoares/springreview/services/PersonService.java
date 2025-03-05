@@ -34,14 +34,14 @@ public class PersonService {
     @Autowired
     private PersonRepository repository ;
 
-    public Optional<PersonDTO> findById(@PathVariable("id") Long id){
+    public PersonDTO findById(@PathVariable("id") Long id){
 
         logger.info("Finding person");
 
         var person = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
 
-        return Optional.ofNullable(parseObject(person, PersonDTO.class));
+        return parseObject(person, PersonDTO.class);
 
         //return Optional.ofNullable(parseObject(repository.findById(id), PersonDTO.class));
                 //.orElseThrow(() -> new ResourceNotFoundException("No person found"));
@@ -89,10 +89,10 @@ public class PersonService {
         repository.deleteById(entity.getId());
     }
 
-    public PersonDTOV2 createV2(PersonDTOV2 person) {
-        logger.info("Creating person V2: " + person.toString());
-        var entity = parseObject(person, Person.class);
-        //repository.save(entity);
-        return converter.convertEntityToDTO(repository.save(entity));
-    }
+//    public PersonDTOV2 createV2(PersonDTOV2 person) {
+//        logger.info("Creating person V2: " + person.toString());
+//        var entity = parseObject(person, Person.class);
+//        //repository.save(entity);
+//        return converter.convertEntityToDTO(repository.save(entity));
+//    }
 }

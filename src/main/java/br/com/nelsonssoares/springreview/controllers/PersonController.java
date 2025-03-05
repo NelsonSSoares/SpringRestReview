@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +20,10 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping("/{id}")
-    public Optional<PersonDTO> findById(@PathVariable("id") Long id) {
-        return personService.findById(id);
+    public PersonDTO findById(@PathVariable("id") Long id) {
+        var person = personService.findById(id);
+        person.setBirthDay(new Date());
+        return person;
     }
 
     @GetMapping()
