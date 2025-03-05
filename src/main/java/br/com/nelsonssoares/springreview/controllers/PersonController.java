@@ -24,6 +24,7 @@ public class PersonController {
         var person = personService.findById(id);
         person.setBirthDay(new Date());
         person.setPhoneNumber("+55 (11) 4002-8922");
+        person.setSensitiveData("This is a sensitive data");
         return person;
     }
 

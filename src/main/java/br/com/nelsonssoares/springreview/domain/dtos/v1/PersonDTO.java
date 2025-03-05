@@ -36,6 +36,11 @@ public class PersonDTO implements Serializable {
     @JsonSerialize(using = GenderSerializer.class)
     private String gender;
 
+    // Filtra os campos que não devem ser exibidos,
+    // com a configuração feita em ObjectMapperConfig
+    @JsonFilter("PersonFilter")
+    private String sensitiveData;
+
 
     public PersonDTO() {
     }
@@ -97,15 +102,23 @@ public class PersonDTO implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getSensitiveData() {
+        return sensitiveData;
+    }
+
+    public void setSensitiveData(String sensitiveData) {
+        this.sensitiveData = sensitiveData;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         PersonDTO personDTO = (PersonDTO) o;
-        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(phoneNumber, personDTO.phoneNumber) && Objects.equals(birthDay, personDTO.birthDay) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender);
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(phoneNumber, personDTO.phoneNumber) && Objects.equals(birthDay, personDTO.birthDay) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender) && Objects.equals(sensitiveData, personDTO.sensitiveData);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, phoneNumber, birthDay, address, gender);
+        return Objects.hash(id, firstName, lastName, phoneNumber, birthDay, address, gender, sensitiveData);
     }
 }
