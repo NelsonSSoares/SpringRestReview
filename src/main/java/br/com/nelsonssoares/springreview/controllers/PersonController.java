@@ -11,8 +11,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
+
 @RestController
-@RequestMapping(value="api/person/v1", produces = "application/json")
+@RequestMapping(value="api/person/v1", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
 public class PersonController {
 
 
@@ -28,7 +31,7 @@ public class PersonController {
         return person;
     }
 
-    @GetMapping()
+    @GetMapping
     public List<PersonDTO> findAll(){
         return personService.findAll();
     }
