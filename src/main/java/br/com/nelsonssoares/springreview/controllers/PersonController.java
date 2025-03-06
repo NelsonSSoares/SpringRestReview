@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +22,13 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @GetMapping("/{id}" )
-    public Optional<PersonDTO> findById(@PathVariable("id") Long id) {
-        return personService.findById(id);
+    @GetMapping("/{id}")
+    public PersonDTO findById(@PathVariable("id") Long id) {
+        var person = personService.findById(id);
+        person.setBirthDay(new Date());
+        person.setPhoneNumber("+55 (11) 4002-8922");
+        person.setSensitiveData("This is a sensitive data");
+        return person;
     }
 
     @GetMapping
