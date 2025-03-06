@@ -10,20 +10,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
+
 @RestController
-@RequestMapping(value="api/person/v1", produces = "application/json")
+@RequestMapping(value="api/person/v1", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
 public class PersonController {
 
 
     @Autowired
     private PersonService personService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}" )
     public Optional<PersonDTO> findById(@PathVariable("id") Long id) {
         return personService.findById(id);
     }
 
-    @GetMapping()
+    @GetMapping
     public List<PersonDTO> findAll(){
         return personService.findAll();
     }
