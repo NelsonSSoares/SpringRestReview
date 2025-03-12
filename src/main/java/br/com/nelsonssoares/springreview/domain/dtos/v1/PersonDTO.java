@@ -3,15 +3,16 @@ package br.com.nelsonssoares.springreview.domain.dtos.v1;
 import br.com.nelsonssoares.springreview.utils.serializer.GenderSerializer;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-
+// Define a ordem dos campos
 //@JsonPropertyOrder({"id", "first_name", "last_name", "address","gender"})
-public class PersonDTO implements Serializable {
-
+public class PersonDTO  extends RepresentationModel<PersonDTO> implements Serializable  {
+                        //superclasse para adicionar links HATEOAS
     private static final long serialVersionUID = 1L;
 
 
