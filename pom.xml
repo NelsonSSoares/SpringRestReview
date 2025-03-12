@@ -35,6 +35,11 @@
             <artifactId>spring-boot-starter-validation</artifactId>
             <version>3.4.2</version>
         </dependency>
+        <!-- hateoas dependency for restfull apis -->
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+        </dependency>
         <!-- content negotiation -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>

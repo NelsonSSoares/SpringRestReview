@@ -2,7 +2,6 @@ package br.com.nelsonssoares.springreview.services;
 
 import br.com.nelsonssoares.springreview.controllers.PersonController;
 import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
-import br.com.nelsonssoares.springreview.domain.dtos.v2.PersonDTOV2;
 import br.com.nelsonssoares.springreview.domain.models.Person;
 import br.com.nelsonssoares.springreview.domain.repositories.PersonRepository;
 import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
@@ -12,13 +11,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static br.com.nelsonssoares.springreview.utils.mapper.ObjectMapper.parseListObjects;
 import static br.com.nelsonssoares.springreview.utils.mapper.ObjectMapper.parseObject;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 //@RequiredArgsConstructor
@@ -41,7 +41,11 @@ public class PersonService {
         var person = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
 
-        return parseObject(person, PersonDTO.class);
+        var dto = parseObject(person, PersonDTO.class);
+        // Adiciona link HATEOAS para o método findById, com o id do objeto
+        // e o tipo de requisição
+        dto.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel().withType("GET"));
+        return dto;
 
         //return Optional.ofNullable(parseObject(repository.findById(id), PersonDTO.class));
                 //.orElseThrow(() -> new ResourceNotFoundException("No person found"));
