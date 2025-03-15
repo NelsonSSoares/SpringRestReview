@@ -44,7 +44,8 @@ public class PersonService {
         var dto = parseObject(person, PersonDTO.class);
         // Adiciona link HATEOAS para o método findById, com o id do objeto
         // e o tipo de requisição
-        dto.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel().withType("GET"));
+        addHateoasLinks(dto);
+
         return dto;
 
         //return Optional.ofNullable(parseObject(repository.findById(id), PersonDTO.class));
@@ -53,8 +54,12 @@ public class PersonService {
 
     public List<PersonDTO> findAll(){
 
-       return parseListObjects(repository.findAll(), PersonDTO.class);
+       var dtos = parseListObjects(repository.findAll(), PersonDTO.class);
                //.orElseThrow(() -> new ResourceNotFoundException("No person found"));
+        // dtos.forEach(dto -> addHateoasLinks(dto));
+                    // ou this
+        dtos.forEach(PersonService::addHateoasLinks);
+        return dtos;
     }
 
     private Person mockPerson(int i) {
@@ -71,7 +76,9 @@ public class PersonService {
         logger.info("Creating person: " + person.toString());
         var entity = parseObject(person, Person.class);
         //repository.save(entity);
-        return parseObject(repository.save(entity), PersonDTO.class);
+        var dto = parseObject(repository.save(entity), PersonDTO.class);
+        addHateoasLinks(dto);
+        return dto;
     }
 
     public PersonDTO update(Long id, PersonDTO person) {
@@ -83,7 +90,9 @@ public class PersonService {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return parseObject(repository.save(entity), PersonDTO.class);
+        var dto = parseObject(repository.save(entity), PersonDTO.class);
+        addHateoasLinks(dto);
+        return dto;
     }
 
     public void delete(Long id) {
@@ -91,6 +100,16 @@ public class PersonService {
         Person entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No person found"));
         repository.deleteById(entity.getId());
+    }
+    // metodo para adicionar links HATEOAS ao response, utilizando cada metodo do controller
+
+    private static void addHateoasLinks(PersonDTO dto) {
+        dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
+        dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
+        dto.add(linkTo(methodOn(PersonController.class).update(dto.getId(), dto)).withRel("update").withType("PUT"));
+
     }
 
 //    public PersonDTOV2 createV2(PersonDTOV2 person) {
