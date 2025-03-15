@@ -102,6 +102,7 @@ public class PersonService {
         repository.deleteById(entity.getId());
     }
     // metodo para adicionar links HATEOAS ao response, utilizando cada metodo do controller
+
     private static void addHateoasLinks(PersonDTO dto) {
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
