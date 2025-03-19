@@ -1,6 +1,7 @@
 package br.com.nelsonssoares.springreview.exceptions.handler;
 
 import br.com.nelsonssoares.springreview.exceptions.ExceptionResponse;
+import br.com.nelsonssoares.springreview.exceptions.RequiredObjectIsNullException;
 import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,17 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
                 request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RequiredObjectIsNullException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequestException(Exception ex, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
 }

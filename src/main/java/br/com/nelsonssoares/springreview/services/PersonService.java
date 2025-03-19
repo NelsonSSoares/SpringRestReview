@@ -4,6 +4,7 @@ import br.com.nelsonssoares.springreview.controllers.PersonController;
 import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
 import br.com.nelsonssoares.springreview.domain.models.Person;
 import br.com.nelsonssoares.springreview.domain.repositories.PersonRepository;
+import br.com.nelsonssoares.springreview.exceptions.RequiredObjectIsNullException;
 import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
 import br.com.nelsonssoares.springreview.utils.mapper.custom.PersonMapperV2;
 import org.slf4j.Logger;
@@ -73,6 +74,9 @@ public class PersonService {
     }
 
     public PersonDTO create(PersonDTO person) {
+
+        if(person == null) throw new RequiredObjectIsNullException();
+
         logger.info("Creating person: " + person.toString());
         var entity = parseObject(person, Person.class);
         //repository.save(entity);
@@ -82,6 +86,9 @@ public class PersonService {
     }
 
     public PersonDTO update(Long id, PersonDTO person) {
+
+        if(person == null) throw new RequiredObjectIsNullException();
+
         logger.info("Updating person: " + person.toString());
         Person entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No person found"));
