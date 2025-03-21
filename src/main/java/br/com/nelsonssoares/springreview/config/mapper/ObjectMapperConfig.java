@@ -1,4 +1,4 @@
-package br.com.nelsonssoares.springreview.config;
+package br.com.nelsonssoares.springreview.config.mapper;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

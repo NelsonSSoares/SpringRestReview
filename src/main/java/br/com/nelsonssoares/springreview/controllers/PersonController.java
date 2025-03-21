@@ -1,27 +1,30 @@
 package br.com.nelsonssoares.springreview.controllers;
 
+import br.com.nelsonssoares.springreview.controllers.docs.PersonControllerInterface;
 import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
-import br.com.nelsonssoares.springreview.domain.dtos.v2.PersonDTOV2;
 import br.com.nelsonssoares.springreview.services.PersonService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.MediaType.*;
 
 @RestController
 @RequestMapping(value="api/person/v1", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE, APPLICATION_YAML_VALUE})
-public class PersonController {
+@Tag(name = "People", description = "Endpoint for people management")
+public class PersonController implements PersonControllerInterface {
 
 
     @Autowired
     private PersonService personService;
 
+
     @GetMapping("/{id}")
+    @Override
     public PersonDTO findById(@PathVariable("id") Long id) {
         var person = personService.findById(id);
         person.setBirthDay(new Date());
@@ -30,22 +33,26 @@ public class PersonController {
         return person;
     }
 
-    @GetMapping
+
+    @Override
     public List<PersonDTO> findAll(){
         return personService.findAll();
     }
 
-    @PostMapping
+
+    @Override
     public PersonDTO create(@RequestBody PersonDTO person) {
         return personService.create(person);
     }
 
-    @PutMapping("/{id}")
+
+    @Override
     public PersonDTO update(@PathVariable("id") Long id, @RequestBody PersonDTO person) {
         return personService.update(id, person);
     }
 
-    @DeleteMapping("/{id}")
+
+    @Override
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         personService.delete(id);
         return ResponseEntity.noContent().build();

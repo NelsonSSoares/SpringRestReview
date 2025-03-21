@@ -22,3 +22,16 @@ spring:
       #root: INFO
       # Nivel de Log para package especifico
       #br.com.nelsonssoares.springreview: DEBUG
+
+  # Configuração do Swagger
+  spring-doc:
+    # paths-to-match serve para definir quais endpoints serão documentados, sendo que /** é para todos os endpoints
+    paths-to-match: /api/**/v1/**
+    swagger-ui:
+      use-root-path: true
+#    version: 1.0
+#    title: Spring Review
+#    description: Documentação da API Spring Review
+#    contact:
+#      name: Nelson Soares
+#      email:

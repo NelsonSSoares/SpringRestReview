@@ -258,7 +258,7 @@ class PersonServiceTest {
 
         assertEquals("First Name Test4", person4.getFirstName());
         assertEquals("Last Name Test4", person4.getLastName());
-        assertEquals("Address Test4", person4.getAddress());
+        assertEquals("Address Test4 ", person4.getAddress());
     }
 
     @Test

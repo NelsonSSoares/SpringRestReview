@@ -34,6 +34,7 @@ public class PersonDTO  extends RepresentationModel<PersonDTO> implements Serial
     private String address;
 
     //@JsonIgnore
+    // GenderSerializer é uma classe que faz a abreveação do gênero
     @JsonSerialize(using = GenderSerializer.class)
     private String gender;
 
