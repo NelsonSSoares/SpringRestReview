@@ -10,11 +10,11 @@ public class BookDTO extends RepresentationModel<BookDTO> implements Serializabl
 
     private Long id;
     private String author;
-    private LocalDateTime launchDate;
+    private String launchDate;
     private String title;
     private Double price;
 
-    public BookDTO(Long id, String author, LocalDateTime launchDate, String title, Double price) {
+    public BookDTO(Long id, String author, String launchDate, String title, Double price) {
         this.id = id;
         this.author = author;
         this.launchDate = launchDate;
@@ -42,11 +42,11 @@ public class BookDTO extends RepresentationModel<BookDTO> implements Serializabl
         this.author = author;
     }
 
-    public LocalDateTime getPublicationDate() {
+    public String getLaunchDate() {
         return launchDate;
     }
 
-    public void setPublicationDate(LocalDateTime launchDate) {
+    public void setLaunchDate(String launchDate) {
         this.launchDate = launchDate;
     }
 
