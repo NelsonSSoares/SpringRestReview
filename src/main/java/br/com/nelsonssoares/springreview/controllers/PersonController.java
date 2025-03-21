@@ -1,13 +1,8 @@
 package br.com.nelsonssoares.springreview.controllers;
 
+import br.com.nelsonssoares.springreview.controllers.docs.PersonControllerInterface;
 import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
-import br.com.nelsonssoares.springreview.domain.dtos.v2.PersonDTOV2;
 import br.com.nelsonssoares.springreview.services.PersonService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.MediaType.*;
 
