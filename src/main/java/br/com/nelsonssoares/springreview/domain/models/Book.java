@@ -1,6 +1,8 @@
 package br.com.nelsonssoares.springreview.domain.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,16 +15,21 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String author;
-    private LocalDateTime launchDate;
+    @NotBlank
+    @Temporal(TemporalType.DATE)
+    private String launchDate;
+    @NotBlank
     private String title;
+    @NotBlank
     private Double price;
 
     public Book() {
 
     }
 
-    public Book(Long id, String author, LocalDateTime launchDate, String title, Double price) {
+    public Book(Long id, String author, String launchDate, String title, Double price) {
         this.id = id;
         this.author = author;
         this.launchDate = launchDate;
@@ -46,11 +53,11 @@ public class Book {
         this.author = author;
     }
 
-    public LocalDateTime getLaunchDate() {
+    public String getLaunchDate() {
         return launchDate;
     }
 
-    public void setLaunchDate(LocalDateTime launchDate) {
+    public void setLaunchDate(String launchDate) {
         this.launchDate = launchDate;
     }
 
