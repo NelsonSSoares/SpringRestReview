@@ -1,4 +1,4 @@
-package br.com.nelsonssoares.springreview.services;
+package br.com.nelsonssoares.springreview.unittests.services;
 
 
 import br.com.nelsonssoares.springreview.domain.dtos.v1.BookDTO;
@@ -6,6 +6,7 @@ import br.com.nelsonssoares.springreview.domain.models.Book;
 import br.com.nelsonssoares.springreview.domain.repositories.BooksRepository;
 import br.com.nelsonssoares.springreview.exceptions.RequiredObjectIsNullException;
 import br.com.nelsonssoares.springreview.mocks.MockBook;
+import br.com.nelsonssoares.springreview.services.BooksService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
