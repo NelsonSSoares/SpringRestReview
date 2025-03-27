@@ -1,4 +1,4 @@
-package br.com.nelsonssoares.springreview.unitests.mapper;
+package br.com.nelsonssoares.springreview.unittests.mapper;
 import static br.com.nelsonssoares.springreview.utils.mapper.ObjectMapper.parseListObjects;
 import static br.com.nelsonssoares.springreview.utils.mapper.ObjectMapper.parseObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
