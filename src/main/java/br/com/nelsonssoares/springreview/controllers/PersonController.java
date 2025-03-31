@@ -13,6 +13,8 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.*;
 
+//@CrossOrigin Habilita o CORS de forma global
+//@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping(value="api/person/v1", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE, APPLICATION_YAML_VALUE})
 @Tag(name = "People", description = "Endpoint for people management")
@@ -23,6 +25,7 @@ public class PersonController implements PersonControllerInterface {
     private PersonService personService;
 
 
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/{id}")
     @Override
     public PersonDTO findById(@PathVariable("id") Long id) {
@@ -39,7 +42,7 @@ public class PersonController implements PersonControllerInterface {
         return personService.findAll();
     }
 
-
+    @CrossOrigin(origins = {"http://localhost:8080","http://localhost:4200"})
     @Override
     public PersonDTO create(@RequestBody PersonDTO person) {
         return personService.create(person);
