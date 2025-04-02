@@ -25,7 +25,7 @@ public class PersonController implements PersonControllerInterface {
     private PersonService personService;
 
 
-    @CrossOrigin(origins = "http://localhost:8080")
+  //  @CrossOrigin(origins = "http://localhost:8080") // Habilita o CORS apenas para esse endpoint
     @GetMapping("/{id}")
     @Override
     public PersonDTO findById(@PathVariable("id") Long id) {
@@ -42,7 +42,7 @@ public class PersonController implements PersonControllerInterface {
         return personService.findAll();
     }
 
-    @CrossOrigin(origins = {"http://localhost:8080","http://localhost:4200"})
+    //@CrossOrigin(origins = {"http://localhost:8080","http://localhost:4200"})
     @Override
     public PersonDTO create(@RequestBody PersonDTO person) {
         return personService.create(person);
