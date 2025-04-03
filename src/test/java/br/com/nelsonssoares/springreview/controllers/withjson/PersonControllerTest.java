@@ -82,21 +82,38 @@ class PersonControllerTest extends AbstractIntegrationTest {
         assertEquals("Male", created.getGender());
     }
 
+    @Order(2)
     @Test
-    void findById() {
+    void createWithWrongOrigin() throws JsonProcessingException {
+        mockPerson();
+
+        specification = new RequestSpecBuilder()
+                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.HEADER_PARAM_UNKOWN_ORIGIN)
+                .setBasePath("/api/person/v1")
+                .setPort(TestConfigs.SERVER_PORT)
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
+
+        var content = given(specification)
+
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(personDTO)
+                .when()
+                .post()
+                .then()
+                .statusCode(403)
+                .extract()
+                .body()
+                .asString();
+
+        assertEquals("Invalid CORS request",content);
+    }
+
+    @Test
+    void findById(){
+
     }
 
 
-
-    @Test
-    void update() {
-    }
-
-    @Test
-    void delete() {
-    }
-
-    @Test
-    void findAll() {
-    }
 }
