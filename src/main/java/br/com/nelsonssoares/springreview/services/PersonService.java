@@ -7,6 +7,7 @@ import br.com.nelsonssoares.springreview.domain.repositories.PersonRepository;
 import br.com.nelsonssoares.springreview.exceptions.RequiredObjectIsNullException;
 import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
 import br.com.nelsonssoares.springreview.utils.mapper.custom.PersonMapperV2;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +103,19 @@ public class PersonService {
         return dto;
     }
 
+    @Transactional
+    public PersonDTO disablePerson(Long id) {
+        logger.info("Desabling a person with id: " + id);
+        repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No person found"));
+        repository.disablePerson(id);
+        var entity = repository.findById(id).get();
+
+        var dto = parseObject(entity, PersonDTO.class);
+        addHateoasLinks(dto);
+        return dto;
+    }
+
     public void delete(Long id) {
         logger.info("Deleting person with id: " + id);
         Person entity = repository.findById(id)
@@ -116,6 +130,7 @@ public class PersonService {
         dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto.getId(), dto)).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
 
     }
 

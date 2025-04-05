@@ -88,4 +88,21 @@ public interface PersonControllerInterface {
     })
     @DeleteMapping("/{id}")
     ResponseEntity<?> delete(@PathVariable("id") Long id);
+
+    @Operation(summary = "update successfully",
+            tags = {"People"}, responses = {
+            @ApiResponse(description = "Success", responseCode = "200", content = {
+                    @Content(mediaType = APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = PersonDTO.class))),
+                    @Content(mediaType = APPLICATION_XML_VALUE),
+                    @Content(mediaType = APPLICATION_YAML_VALUE)
+            }),
+            @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
+            @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+            @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+            @ApiResponse(description = "People not found", responseCode = "404", content = @Content),
+            @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
+    })
+    @PatchMapping("/{id}")
+    PersonDTO disablePerson(@PathVariable("id") Long id);
+
 }
