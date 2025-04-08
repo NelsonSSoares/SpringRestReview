@@ -1,8 +1,14 @@
 package br.com.nelsonssoares.springreview.integrationtests.dto;
 
-import java.io.Serializable;
-import java.util.Objects;
+import lombok.*;
 
+import java.io.Serializable;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@EqualsAndHashCode
 public class PersonDTO implements Serializable  {
 
     private static final long serialVersionUID = 1L;
@@ -17,62 +23,7 @@ public class PersonDTO implements Serializable  {
 
     private String gender;
 
+    private boolean enabled;
 
 
-    public PersonDTO() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        PersonDTO personDTO = (PersonDTO) o;
-        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName)  && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender) ;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, gender);
-    }
 }
