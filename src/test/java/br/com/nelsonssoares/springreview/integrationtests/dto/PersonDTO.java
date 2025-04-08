@@ -1,5 +1,6 @@
 package br.com.nelsonssoares.springreview.integrationtests.dto;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @EqualsAndHashCode
+@XmlRootElement
 public class PersonDTO implements Serializable  {
 
     private static final long serialVersionUID = 1L;
