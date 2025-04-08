@@ -105,4 +105,6 @@ public interface PersonControllerInterface {
     @PatchMapping("/{id}")
     PersonDTO disablePerson(@PathVariable("id") Long id);
 
+
+
 }

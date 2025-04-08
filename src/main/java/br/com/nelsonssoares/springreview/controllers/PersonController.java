@@ -62,8 +62,8 @@ public class PersonController implements PersonControllerInterface {
     }
 
     @Override
-    public PersonDTO disablePerson(Long id) {
-        return null;
+    public PersonDTO disablePerson(@PathVariable("id") Long id) {
+        return personService.disablePerson(id);
     }
 
 

@@ -78,7 +78,7 @@ public class PersonService {
 
         if(person == null) throw new RequiredObjectIsNullException();
 
-        logger.info("Creating person: " + person.toString());
+        logger.info("Creating person: " + person);
         var entity = parseObject(person, Person.class);
         //repository.save(entity);
         var dto = parseObject(repository.save(entity), PersonDTO.class);
@@ -109,6 +109,7 @@ public class PersonService {
         repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No person found"));
         repository.disablePerson(id);
+
         var entity = repository.findById(id).get();
 
         var dto = parseObject(entity, PersonDTO.class);
