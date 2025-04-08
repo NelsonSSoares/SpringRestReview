@@ -1,4 +1,4 @@
-package br.com.nelsonssoares.springreview.controllers.withjson;
+package br.com.nelsonssoares.springreview.controllers.withXML;
 
 import br.com.nelsonssoares.springreview.config.tests.TestConfigs;
 import br.com.nelsonssoares.springreview.integrationtests.AbstractIntegrationTest;
@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -23,16 +24,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class PersonControllerJsonTest extends AbstractIntegrationTest {
+class PersonControllerXMLTest extends AbstractIntegrationTest {
 
     private static RequestSpecification specification;
-    private static ObjectMapper objectMapper;
+    private static XmlMapper objectMapper;
 
     private static PersonDTO person;
 
     @BeforeAll
     static void setUp() {
-        objectMapper = new ObjectMapper();
+        objectMapper = new XmlMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         person = new PersonDTO();
@@ -52,13 +53,14 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
                 .build();
 
         var content = given(specification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
                 .body(person)
                 .when()
+                .accept(MediaType.APPLICATION_XML_VALUE)
                 .post()
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
                 .extract()
                 .body()
                 .asString();
@@ -72,7 +74,7 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertEquals("Linus", createdPerson.getFirstName());
         assertEquals("Torvalds", createdPerson.getLastName());
         assertEquals("Helsinki - Finland", createdPerson.getAddress());
-        assertEquals("Male", createdPerson.getGender());
+        assertEquals("F", createdPerson.getGender());
         assertTrue(createdPerson.isEnabled());
 
     }
@@ -83,13 +85,14 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         person.setLastName("Benedict Torvalds");
 
         var content = given(specification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
+                .accept(MediaType.APPLICATION_XML_VALUE)
                 .body(person)
                 .when()
                 .put()
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
                 .extract()
                 .body()
                 .asString();
@@ -103,7 +106,7 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertEquals("Linus", createdPerson.getFirstName());
         assertEquals("Benedict Torvalds", createdPerson.getLastName());
         assertEquals("Helsinki - Finland", createdPerson.getAddress());
-        assertEquals("Male", createdPerson.getGender());
+        assertEquals("M", createdPerson.getGender());
         assertTrue(createdPerson.isEnabled());
 
     }
@@ -113,13 +116,14 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
     void findByIdTest() throws JsonProcessingException {
 
         var content = given(specification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
+                .accept(MediaType.APPLICATION_XML_VALUE)
                 .pathParam("id", person.getId())
                 .when()
                 .get("{id}")
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
                 .extract()
                 .body()
                 .asString();
@@ -131,9 +135,9 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertTrue(createdPerson.getId() > 0);
 
         assertEquals("Linus", createdPerson.getFirstName());
-        assertEquals("Benedict Torvalds", createdPerson.getLastName());
+        assertEquals("Torvalds", createdPerson.getLastName());
         assertEquals("Helsinki - Finland", createdPerson.getAddress());
-        assertEquals("Male", createdPerson.getGender());
+        assertEquals("M", createdPerson.getGender());
         assertTrue(createdPerson.isEnabled());
     }
 
@@ -142,13 +146,14 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
     void disableTest() throws JsonProcessingException {
 
         var content = given(specification)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
+                .accept(MediaType.APPLICATION_XML_VALUE)
                 .pathParam("id", person.getId())
                 .when()
                 .patch("{id}")
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
                 .extract()
                 .body()
                 .asString();
@@ -160,9 +165,9 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertTrue(createdPerson.getId() > 0);
 
         assertEquals("Linus", createdPerson.getFirstName());
-        assertEquals("Benedict Torvalds", createdPerson.getLastName());
+        assertEquals("Torvalds", createdPerson.getLastName());
         assertEquals("Helsinki - Finland", createdPerson.getAddress());
-        assertEquals("Male", createdPerson.getGender());
+        assertEquals("M", createdPerson.getGender());
         assertFalse(createdPerson.isEnabled());
     }
 
@@ -184,12 +189,13 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
     void findAllTest() throws JsonProcessingException {
 
         var content = given(specification)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_XML_VALUE)
+                .accept(MediaType.APPLICATION_XML_VALUE)
                 .when()
                 .get()
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
                 .extract()
                 .body()
                 .asString();
@@ -201,10 +207,10 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(personOne.getId());
         assertTrue(personOne.getId() > 0);
 
-        assertEquals("Ayrton", personOne.getFirstName());
+        assertEquals("Fernando", personOne.getFirstName());
         assertEquals("Senna", personOne.getLastName());
         assertEquals("São Paulo - Brasil", personOne.getAddress());
-        assertEquals("Male", personOne.getGender());
+        assertEquals("M", personOne.getGender());
         assertTrue(personOne.isEnabled());
 
         PersonDTO personFour = people.get(4);
@@ -215,7 +221,7 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertEquals("Muhamamd", personFour.getFirstName());
         assertEquals("Ali", personFour.getLastName());
         assertEquals("Kentucky - US", personFour.getAddress());
-        assertEquals("Male", personFour.getGender());
+        assertEquals("M", personFour.getGender());
         assertTrue(personFour.isEnabled());
     }
 
@@ -223,7 +229,7 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         person.setFirstName("Linus");
         person.setLastName("Torvalds");
         person.setAddress("Helsinki - Finland");
-        person.setGender("Male");
+        person.setGender("M");
         person.setEnabled(true);
     }
 
@@ -232,12 +238,13 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
     void findAllTestWithXML() throws JsonProcessingException {
 
         var content = given(specification)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_XML_VALUE)
+                .accept(MediaType.APPLICATION_XML_VALUE)
                 .when()
                 .get()
                 .then()
                 .statusCode(200)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
                 .extract()
                 .body()
                 .asString();
@@ -249,10 +256,10 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(personOne.getId());
         assertTrue(personOne.getId() > 0);
 
-        assertEquals("Ayrton", personOne.getFirstName());
+        assertEquals("Fernando", personOne.getFirstName());
         assertEquals("Senna", personOne.getLastName());
         assertEquals("São Paulo - Brasil", personOne.getAddress());
-        assertEquals("Male", personOne.getGender());
+        assertEquals("M", personOne.getGender());
         assertTrue(personOne.isEnabled());
 
         PersonDTO personFour = people.get(4);
@@ -263,7 +270,7 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertEquals("Muhamamd", personFour.getFirstName());
         assertEquals("Ali", personFour.getLastName());
         assertEquals("Kentucky - US", personFour.getAddress());
-        assertEquals("Male", personFour.getGender());
+        assertEquals("M", personFour.getGender());
         assertTrue(personFour.isEnabled());
     }
 
