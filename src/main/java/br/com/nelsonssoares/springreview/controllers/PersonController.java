@@ -61,6 +61,12 @@ public class PersonController implements PersonControllerInterface {
         return ResponseEntity.noContent().build();
     }
 
+    @Override
+    public PersonDTO disablePerson(@PathVariable("id") Long id) {
+        return personService.disablePerson(id);
+    }
+
+
 //    @PostMapping("/v2")
 //    public PersonDTOV2 createV2(@RequestBody PersonDTOV2 person) {
 //        return personService.createV2(person);
