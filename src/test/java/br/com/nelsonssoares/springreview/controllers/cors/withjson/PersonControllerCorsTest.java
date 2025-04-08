@@ -1,4 +1,4 @@
-package br.com.nelsonssoares.springreview.controllers.withjson;
+package br.com.nelsonssoares.springreview.controllers.cors.withjson;
 
 import br.com.nelsonssoares.springreview.config.tests.TestConfigs;
 import br.com.nelsonssoares.springreview.integrationtests.AbstractIntegrationTest;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class PersonControllerTest extends AbstractIntegrationTest {
+class PersonControllerCorsTest extends AbstractIntegrationTest {
 
     private static RequestSpecification specification;
     private static ObjectMapper objectMapper;
@@ -151,7 +151,7 @@ class PersonControllerTest extends AbstractIntegrationTest {
         assertEquals("Nixon", created.getLastName());
         assertEquals("White House" , created.getAddress());
         assertEquals("Male", created.getGender());
-
+        assertTrue(created.isEnabled());
 
     }
 
