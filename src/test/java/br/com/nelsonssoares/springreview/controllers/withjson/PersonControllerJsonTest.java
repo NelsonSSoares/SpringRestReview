@@ -72,7 +72,7 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertEquals("Linus", createdPerson.getFirstName());
         assertEquals("Torvalds", createdPerson.getLastName());
         assertEquals("Helsinki - Finland", createdPerson.getAddress());
-        assertEquals("Male", createdPerson.getGender());
+        assertEquals("M", createdPerson.getGender());
         assertTrue(createdPerson.isEnabled());
 
     }
@@ -131,9 +131,9 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertTrue(createdPerson.getId() > 0);
 
         assertEquals("Linus", createdPerson.getFirstName());
-        assertEquals("Benedict Torvalds", createdPerson.getLastName());
+        assertEquals("Torvalds", createdPerson.getLastName());
         assertEquals("Helsinki - Finland", createdPerson.getAddress());
-        assertEquals("Male", createdPerson.getGender());
+        assertEquals("M", createdPerson.getGender());
         assertTrue(createdPerson.isEnabled());
     }
 
@@ -160,9 +160,9 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertTrue(createdPerson.getId() > 0);
 
         assertEquals("Linus", createdPerson.getFirstName());
-        assertEquals("Benedict Torvalds", createdPerson.getLastName());
+        assertEquals("Torvalds", createdPerson.getLastName());
         assertEquals("Helsinki - Finland", createdPerson.getAddress());
-        assertEquals("Male", createdPerson.getGender());
+        assertEquals("M", createdPerson.getGender());
         assertFalse(createdPerson.isEnabled());
     }
 
@@ -201,10 +201,10 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(personOne.getId());
         assertTrue(personOne.getId() > 0);
 
-        assertEquals("Ayrton", personOne.getFirstName());
-        assertEquals("Senna", personOne.getLastName());
-        assertEquals("São Paulo - Brasil", personOne.getAddress());
-        assertEquals("Male", personOne.getGender());
+        assertEquals("Fernando", personOne.getFirstName());
+        assertEquals("Soares", personOne.getLastName());
+        assertEquals("Rua 1", personOne.getAddress());
+        assertEquals("M", personOne.getGender());
         assertTrue(personOne.isEnabled());
 
         PersonDTO personFour = people.get(4);
@@ -212,10 +212,10 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(personFour.getId());
         assertTrue(personFour.getId() > 0);
 
-        assertEquals("Muhamamd", personFour.getFirstName());
-        assertEquals("Ali", personFour.getLastName());
+        assertEquals("Bashar", personFour.getFirstName());
+        assertEquals("Al-assad", personFour.getLastName());
         assertEquals("Kentucky - US", personFour.getAddress());
-        assertEquals("Male", personFour.getGender());
+        assertEquals("M", personFour.getGender());
         assertTrue(personFour.isEnabled());
     }
 
@@ -249,10 +249,10 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(personOne.getId());
         assertTrue(personOne.getId() > 0);
 
-        assertEquals("Ayrton", personOne.getFirstName());
-        assertEquals("Senna", personOne.getLastName());
-        assertEquals("São Paulo - Brasil", personOne.getAddress());
-        assertEquals("Male", personOne.getGender());
+        assertEquals("Fernando", personOne.getFirstName());
+        assertEquals("Soares", personOne.getLastName());
+        assertEquals("Rua 1", personOne.getAddress());
+        assertEquals("M", personOne.getGender());
         assertTrue(personOne.isEnabled());
 
         PersonDTO personFour = people.get(4);
@@ -260,10 +260,10 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(personFour.getId());
         assertTrue(personFour.getId() > 0);
 
-        assertEquals("Muhamamd", personFour.getFirstName());
-        assertEquals("Ali", personFour.getLastName());
+        assertEquals("Bashar", personFour.getFirstName());
+        assertEquals("Al-assad", personFour.getLastName());
         assertEquals("Kentucky - US", personFour.getAddress());
-        assertEquals("Male", personFour.getGender());
+        assertEquals("M", personFour.getGender());
         assertTrue(personFour.isEnabled());
     }
 
