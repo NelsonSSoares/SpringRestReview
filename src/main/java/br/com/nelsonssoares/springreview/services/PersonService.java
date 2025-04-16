@@ -11,6 +11,8 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -54,14 +56,18 @@ public class PersonService {
                 //.orElseThrow(() -> new ResourceNotFoundException("No person found"));
     }
 
-    public List<PersonDTO> findAll(){
+    public Page<PersonDTO> findAll(Pageable pageable) {
 
-       var dtos = parseListObjects(repository.findAll(), PersonDTO.class);
-               //.orElseThrow(() -> new ResourceNotFoundException("No person found"));
-        // dtos.forEach(dto -> addHateoasLinks(dto));
-                    // ou this
-        dtos.forEach(PersonService::addHateoasLinks);
-        return dtos;
+        var people = repository.findAll(pageable);
+
+        var peopleWithLinks = people.map(
+                person -> {
+                    var dto = parseObject(person, PersonDTO.class);
+                    addHateoasLinks(dto);
+                    return dto;
+                }
+        );
+        return peopleWithLinks;
     }
 
     private Person mockPerson(int i) {
@@ -128,7 +134,7 @@ public class PersonService {
     private static void addHateoasLinks(PersonDTO dto) {
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
-        dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).findAll(1,12)).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto.getId(), dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
