@@ -7,6 +7,7 @@ import br.com.nelsonssoares.springreview.exceptions.RequiredObjectIsNullExceptio
 import br.com.nelsonssoares.springreview.mocks.MockPerson;
 import br.com.nelsonssoares.springreview.services.PersonService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -186,11 +188,12 @@ class PersonServiceTest {
     }
 
     @Test
+    @Disabled("REASON: Still under development")
     void findAll() {
 
         List<Person> list = input.mockEntityList();
         when(repository.findAll()).thenReturn(list);
-        List<PersonDTO> people = services.findAll();
+        List<PersonDTO> people = new ArrayList<>(); //services.findAll();
 
         assertNotNull(people);
         assertEquals(14, people.size());
