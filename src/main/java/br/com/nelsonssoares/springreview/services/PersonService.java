@@ -134,17 +134,18 @@ public class PersonService {
     private static void addHateoasLinks(PersonDTO dto) {
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
-        dto.add(linkTo(methodOn(PersonController.class).findAll(1,12)).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).findAll(1,12,"asc")).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto.getId(), dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
 
     }
 
+
+}
 //    public PersonDTOV2 createV2(PersonDTOV2 person) {
 //        logger.info("Creating person V2: " + person.toString());
 //        var entity = parseObject(person, Person.class);
 //        //repository.save(entity);
 //        return converter.convertEntityToDTO(repository.save(entity));
 //    }
-}
