@@ -1,11 +1,12 @@
 package br.com.nelsonssoares.springreview.domain.dtos.v1;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-
+@Relation(collectionRelation = "people")
 public class BookDTO extends RepresentationModel<BookDTO> implements Serializable {
 
     private Long id;

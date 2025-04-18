@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,8 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// Relation é uma anotação do Spring HATEOAS que define o nome da coleção
+@Relation(collectionRelation = "people")
 public class PersonDTO  extends RepresentationModel<PersonDTO> implements Serializable  {
                         //superclasse para adicionar links HATEOAS
     private static final long serialVersionUID = 1L;
