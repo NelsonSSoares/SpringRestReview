@@ -77,7 +77,17 @@ public class PersonController implements PersonControllerInterface {
     public PersonDTO disablePerson(@PathVariable("id") Long id) {
         return personService.disablePerson(id);
     }
-
+    @Override
+    public ResponseEntity<PagedModel<EntityModel<PersonDTO>>> findAllByName(
+            @PathVariable(value = "firstName") String firstName,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ){
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        var pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
+        return ResponseEntity.ok(personService.findAByName(firstName, pageable));
+    }
 
 //    @PostMapping("/v2")
 //    public PersonDTOV2 createV2(@RequestBody PersonDTOV2 person) {
