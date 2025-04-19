@@ -11,23 +11,19 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import java.util.List;
-import java.util.Optional;
+
 import java.util.concurrent.atomic.AtomicLong;
 
-import static br.com.nelsonssoares.springreview.utils.mapper.ObjectMapper.parseListObjects;
 import static br.com.nelsonssoares.springreview.utils.mapper.ObjectMapper.parseObject;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
@@ -81,6 +77,24 @@ public class PersonService {
                 .findAll(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort().toString())).withSelfRel();
 
       return assembler.toModel(peopleWithLinks, link);
+    }
+
+    public PagedModel<EntityModel<PersonDTO>> findAByName(String firstName, Pageable pageable) {
+
+        var people = repository.findPeopleByName(firstName,pageable);
+
+        var peopleWithLinks = people.map(
+                person -> {
+                    var dto = parseObject(person, PersonDTO.class);
+                    addHateoasLinks(dto);
+                    return dto;
+                }
+        );
+        // Adiciona link HATEOAS para o método findAll, com o número da página, o tamanho da página e a ordenação
+        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class)
+                .findAll(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort().toString())).withSelfRel();
+
+        return assembler.toModel(peopleWithLinks, link);
     }
 
     private Person mockPerson(int i) {
