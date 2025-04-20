@@ -3,6 +3,7 @@ package br.com.nelsonssoares.springreview.controllers.withXML;
 import br.com.nelsonssoares.springreview.config.tests.TestConfigs;
 import br.com.nelsonssoares.springreview.integrationtests.AbstractIntegrationTest;
 import br.com.nelsonssoares.springreview.integrationtests.dto.PersonDTO;
+import br.com.nelsonssoares.springreview.integrationtests.dto.wappers.xml.PagedModelPerson;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -190,7 +191,7 @@ class PersonControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given(specification)
                 .accept(MediaType.APPLICATION_XML_VALUE)
-                .accept(MediaType.APPLICATION_XML_VALUE)
+                .queryParam("page",3,"size",12,"direction","asc")
                 .when()
                 .get()
                 .then()
@@ -200,7 +201,8 @@ class PersonControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        List<PersonDTO> people = objectMapper.readValue(content, new TypeReference<List<PersonDTO>>() {});
+        PagedModelPerson wrapper = objectMapper.readValue(content, PagedModelPerson.class);
+        List<PersonDTO> people = wrapper.getContent();
 
         PersonDTO personOne = people.get(0);
 
@@ -239,7 +241,7 @@ class PersonControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given(specification)
                 .accept(MediaType.APPLICATION_XML_VALUE)
-                .accept(MediaType.APPLICATION_XML_VALUE)
+                .queryParam("page",3,"size",12,"direction","asc")
                 .when()
                 .get()
                 .then()
@@ -249,6 +251,7 @@ class PersonControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
+
         List<PersonDTO> people = objectMapper.readValue(content, new TypeReference<List<PersonDTO>>() {});
 
         PersonDTO personOne = people.get(0);
@@ -256,9 +259,9 @@ class PersonControllerXMLTest extends AbstractIntegrationTest {
         assertNotNull(personOne.getId());
         assertTrue(personOne.getId() > 0);
 
-        assertEquals("Fernando", personOne.getFirstName());
-        assertEquals("Soares", personOne.getLastName());
-        assertEquals("Rua 1", personOne.getAddress());
+        assertEquals("Aluino", personOne.getFirstName());
+        assertEquals("Swyne", personOne.getLastName());
+        assertEquals("Suite 20", personOne.getAddress());
         assertEquals("M", personOne.getGender());
         assertTrue(personOne.isEnabled());
 
@@ -267,10 +270,10 @@ class PersonControllerXMLTest extends AbstractIntegrationTest {
         assertNotNull(personFour.getId());
         assertTrue(personFour.getId() > 0);
 
-        assertEquals("Bashar", personFour.getFirstName());
-        assertEquals("Al-assad", personFour.getLastName());
-        assertEquals("Rua 30", personFour.getAddress());
-        assertEquals("M", personFour.getGender());
+        assertEquals("Alvina", personFour.getFirstName());
+        assertEquals("De Bruijne", personFour.getLastName());
+        assertEquals("Apt 1301", personFour.getAddress());
+        assertEquals("F", personFour.getGender());
         assertTrue(personFour.isEnabled());
     }
 
