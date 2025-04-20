@@ -222,6 +222,51 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertTrue(personFour.isEnabled());
     }
 
+    @Test
+    @Order(7)
+    void findByNameTest() throws JsonProcessingException {
+
+        var content = given(specification)
+
+                ///api/person/v1/findPeopleByName/and?page=0&size=12&direction=desc
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .pathParam("firstName", "and")
+                .queryParam("page",0,"size",12,"direction","asc")
+                .when()
+                .get("findPeopleByName/{firstName}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        WrapperPersonDTO wrapper = objectMapper.readValue(content, WrapperPersonDTO.class);
+        List<PersonDTO> people = wrapper.getEmbedded().getPeople();
+
+        PersonDTO personOne = people.get(0);
+
+        assertNotNull(personOne.getId());
+        assertTrue(personOne.getId() > 0);
+
+        assertEquals("Alessandro", personOne.getFirstName());
+        assertEquals("Burnell", personOne.getLastName());
+        assertEquals("Apt 1801", personOne.getAddress());
+        assertEquals("M", personOne.getGender());
+        assertFalse(personOne.isEnabled());
+
+        PersonDTO personFour = people.get(1);
+
+        assertNotNull(personFour.getId());
+        assertTrue(personFour.getId() > 0);
+
+        assertEquals("Alexandros", personFour.getFirstName());
+        assertEquals("Corkell", personFour.getLastName());
+        assertEquals("Room 1592", personFour.getAddress());
+        assertEquals("M", personFour.getGender());
+        assertFalse(personFour.isEnabled());
+    }
+
     private void mockPerson() {
         person.setFirstName("Linus");
         person.setLastName("Torvalds");
