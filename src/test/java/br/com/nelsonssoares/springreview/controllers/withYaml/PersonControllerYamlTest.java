@@ -265,6 +265,7 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
 
         PersonDTO personOne = people.get(0);
 
+
         assertNotNull(personOne.getId());
         assertTrue(personOne.getId() > 0);
 

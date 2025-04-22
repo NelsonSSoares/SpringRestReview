@@ -1,5 +1,16 @@
 server:
   port: 8080
+cors:
+    originsPatterns: http://localhost:8080 , http://localhost:4200
+    allowed-methods: GET, POST, PUT, DELETE, OPTIONS
+    allowed-headers: Authorization, Content-Type
+    allow-credentials: true
+    max-age: 3600
+#file:
+#    upload-dir: Users/Nelson/OneDrive/Área de Trabalho/Projetos/SpringBoot/springreview/files
+#    download-dir: /home/nelson/Documentos/downloads
+#    max-file-size: 200MB
+#    max-request-size: 215MB
 spring:
   application:
     name: rest-with-spring-boot-and-java-erudio
@@ -13,6 +24,14 @@ spring:
       hibernate:
     show-sql: false
     open-in-view: false
+    #Configuração para download e upload do arquivo
+    sevlet:
+      multipart:
+        enabled: true
+        # Configuração do tamanho máximo do arquivo
+        file-size-threshold: 2MB
+        max-file-size: 200MB
+        max-request-size: 215MB
 logging:
   level:
     root: INFO
