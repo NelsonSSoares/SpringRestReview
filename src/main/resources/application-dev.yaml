@@ -1,3 +1,8 @@
+file:
+  upload-dir: Users/Nelson/OneDrive/Área de Trabalho/Projetos/SpringBoot/springreview/files
+  download-dir: /home/nelson/Documentos/downloads
+  max-file-size: 200MB
+  max-request-size: 215MB
 cors:
   originsPatterns: http://localhost:8080 , http://localhost:4200
 spring:
@@ -11,6 +16,16 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 # Configuração do JPA
   jpa:
+    #Configuração para download e upload do arquivo
+    sevlet:
+      multipart:
+        enabled: true
+        # Configuração do tamanho máximo do arquivo
+        file-size-threshold: 2MB
+        max-file-size: 200MB
+        max-request-size: 215MB
+
+    # Configuração do Hibernate
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -37,3 +52,5 @@ spring:
 #    contact:
 #      name: Nelson Soares
 #      email:
+#      url: https://nelsonssoares.com
+
