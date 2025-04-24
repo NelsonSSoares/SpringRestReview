@@ -1,7 +1,10 @@
 package br.com.nelsonssoares.springreview.services;
 
 import br.com.nelsonssoares.springreview.config.download.FileStorageConfig;
+import br.com.nelsonssoares.springreview.controllers.docs.FileController;
 import br.com.nelsonssoares.springreview.exceptions.FileStorageException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,8 +21,11 @@ public class FileStorageService {
 
     private final Path fileStorageLocation;
 
+    private static final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
+
     @Autowired
     public FileStorageService(FileStorageConfig fileStorageConfig) {
+        logger.info("Creating Directories for file storage");
         // cria o diretorio aonde os arquivos serao armazenados e normaliza o caminho,removendo caracteres invalidos
         Path path = Paths.get(fileStorageConfig.getUploadDir())
                 .toAbsolutePath().normalize();
@@ -30,6 +36,7 @@ public class FileStorageService {
             Files.createDirectories(this.fileStorageLocation);
 
         }catch (Exception e){
+            logger.error("Could not create the directory where the uploaded files will be stored.", e);
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", e);
         }
     }
@@ -43,12 +50,14 @@ public class FileStorageService {
             if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
+            logger.info("saving file in disk");
             // Verifica se o arquivo é vazio
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             // Copia o arquivo para o diretorio de armazenamento e substitui o arquivo se ja existir
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return fileName;
         } catch (Exception e) {
+            logger.error("Could not store file " + fileName + " Please try again!", e);
             throw new FileStorageException("Could not store file " + fileName + " Please try again!", e);
         }
 
