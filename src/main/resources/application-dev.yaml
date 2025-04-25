@@ -1,5 +1,5 @@
 file:
-  upload-dir: Users/Nelson/OneDrive/Área de Trabalho/Projetos/SpringBoot/springreview/files
+  upload-dir: C:\Users\Nelson\OneDrive\Área de Trabalho\Projetos\SpringBoot\springreview\files
   download-dir: /home/nelson/Documentos/downloads
   max-file-size: 200MB
   max-request-size: 215MB
