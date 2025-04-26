@@ -1,6 +1,7 @@
-package br.com.nelsonssoares.springreview.controllers.docs;
+package br.com.nelsonssoares.springreview.controllers;
 
-import br.com.nelsonssoares.springreview.domain.dtos.UploadFileResponseDTO;
+import br.com.nelsonssoares.springreview.controllers.docs.FileControllerDocs;
+import br.com.nelsonssoares.springreview.domain.dtos.v1.UploadFileResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/file/v1")
-public class FileController implements FileControllerDocs{
+public class FileController implements FileControllerDocs {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 

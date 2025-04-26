@@ -1,7 +1,6 @@
 package br.com.nelsonssoares.springreview.services;
 
 import br.com.nelsonssoares.springreview.config.download.FileStorageConfig;
-import br.com.nelsonssoares.springreview.controllers.docs.FileController;
 import br.com.nelsonssoares.springreview.exceptions.FileNotFoundException;
 import br.com.nelsonssoares.springreview.exceptions.FileStorageException;
 import org.slf4j.Logger;
