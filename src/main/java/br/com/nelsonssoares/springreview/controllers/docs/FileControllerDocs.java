@@ -1,6 +1,6 @@
 package br.com.nelsonssoares.springreview.controllers.docs;
 
-import br.com.nelsonssoares.springreview.domain.dtos.UploadFileResponseDTO;
+import br.com.nelsonssoares.springreview.domain.dtos.v1.UploadFileResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
