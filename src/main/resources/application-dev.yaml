@@ -3,54 +3,53 @@ file:
   download-dir: C:\Users\Nelson\Downloads
   max-file-size: 200MB
   max-request-size: 215MB
+
 cors:
   originsPatterns: http://localhost:8080 , http://localhost:4200
+
 spring:
   application:
     name: springreview
-# Configuração do banco de dados
+
+  # Configuração do banco de dados
   datasource:
     url: jdbc:mysql://localhost:3306/person?serverTimezone=UTC
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-# Configuração do JPA
-  jpa:
-    #Configuração para download e upload do arquivo
-    sevlet:
-      multipart:
-        enabled: true
-        # Configuração do tamanho máximo do arquivo
-        file-size-threshold: 2MB
-        max-file-size: 200MB
-        max-request-size: 215MB
 
-    # Configuração do Hibernate
+  # Configuração do JPA
+  jpa:
     hibernate:
       ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+  # Configuração para download e upload do arquivo
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
   # Configuração de log
   logging:
     level:
-      # Nivel Global de Log
-      #root: INFO
-      # Nivel de Log para package especifico
-      #br.com.nelsonssoares.springreview: DEBUG
+    # root: INFO
+    # br.com.nelsonssoares.springreview: DEBUG
 
   # Configuração do Swagger
   spring-doc:
-    # paths-to-match serve para definir quais endpoints serão documentados, sendo que /** é para todos os endpoints
     paths-to-match: /api/**/v1/**
     swagger-ui:
       use-root-path: true
-#    version: 1.0
-#    title: Spring Review
-#    description: Documentação da API Spring Review
-#    contact:
-#      name: Nelson Soares
-#      email:
-#      url: https://nelsonssoares.com
-
+    # version: 1.0
+    # title: Spring Review
+    # description: Documentação da API Spring Review
+    # contact:
+    #   name: Nelson Soares
+    #   email:
+    #   url: https://nelsonssoares.com
