@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -65,36 +66,15 @@ public class PersonService {
 
         var people = repository.findAll(pageable);
 
-        var peopleWithLinks = people.map(
-                person -> {
-                    var dto = parseObject(person, PersonDTO.class);
-                    addHateoasLinks(dto);
-                    return dto;
-                }
-        );
-        // Adiciona link HATEOAS para o método findAll, com o número da página, o tamanho da página e a ordenação
-        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class)
-                .findAll(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort().toString())).withSelfRel();
-
-      return assembler.toModel(peopleWithLinks, link);
+        return buildPagedModel(pageable, people);
     }
+
 
     public PagedModel<EntityModel<PersonDTO>> findAByName(String firstName, Pageable pageable) {
 
         var people = repository.findPeopleByName(firstName,pageable);
 
-        var peopleWithLinks = people.map(
-                person -> {
-                    var dto = parseObject(person, PersonDTO.class);
-                    addHateoasLinks(dto);
-                    return dto;
-                }
-        );
-        // Adiciona link HATEOAS para o método findAll, com o número da página, o tamanho da página e a ordenação
-        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class)
-                .findAll(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort().toString())).withSelfRel();
-
-        return assembler.toModel(peopleWithLinks, link);
+        return buildPagedModel(pageable, people);
     }
 
     private Person mockPerson(int i) {
@@ -156,6 +136,9 @@ public class PersonService {
                 .orElseThrow(() -> new ResourceNotFoundException("No person found"));
         repository.deleteById(entity.getId());
     }
+
+
+
     // metodo para adicionar links HATEOAS ao response, utilizando cada metodo do controller
 
     private static void addHateoasLinks(PersonDTO dto) {
@@ -165,9 +148,23 @@ public class PersonService {
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto.getId(), dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
-
+        dto.add(linkTo(methodOn(PersonController.class).findAllByName(dto.getFirstName(), 1, 12, "asc")).withRel("findAByName").withType("GET"));
     }
 
+    private PagedModel<EntityModel<PersonDTO>> buildPagedModel(Pageable pageable, Page<Person> people) {
+        var peopleWithLinks = people.map(
+                person -> {
+                    var dto = parseObject(person, PersonDTO.class);
+                    addHateoasLinks(dto);
+                    return dto;
+                }
+        );
+        // Adiciona link HATEOAS para o método findAll, com o número da página, o tamanho da página e a ordenação
+        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class)
+                .findAll(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort().toString())).withSelfRel();
+
+        return assembler.toModel(peopleWithLinks, link);
+    }
 
 }
 //    public PersonDTOV2 createV2(PersonDTOV2 person) {
