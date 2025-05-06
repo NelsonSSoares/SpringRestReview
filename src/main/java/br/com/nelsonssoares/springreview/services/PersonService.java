@@ -4,10 +4,14 @@ import br.com.nelsonssoares.springreview.controllers.PersonController;
 import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
 import br.com.nelsonssoares.springreview.domain.models.Person;
 import br.com.nelsonssoares.springreview.domain.repositories.PersonRepository;
+import br.com.nelsonssoares.springreview.exceptions.FileStorageException;
 import br.com.nelsonssoares.springreview.exceptions.RequiredObjectIsNullException;
 import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
+import br.com.nelsonssoares.springreview.file.importer.contract.FileImporter;
+import br.com.nelsonssoares.springreview.file.importer.factory.FileImporterFactory;
 import br.com.nelsonssoares.springreview.utils.mapper.custom.PersonMapperV2;
 import jakarta.transaction.Transactional;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +24,15 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static br.com.nelsonssoares.springreview.utils.mapper.ObjectMapper.parseObject;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -34,6 +43,9 @@ public class PersonService {
 
     private final AtomicLong counter = new AtomicLong();
     private Logger logger = LoggerFactory.getLogger(PersonController.class.getName());
+
+    @Autowired
+    private FileImporterFactory importer;
 
     @Autowired
     private PersonMapperV2 converter;
@@ -97,6 +109,35 @@ public class PersonService {
         var dto = parseObject(repository.save(entity), PersonDTO.class);
         addHateoasLinks(dto);
         return dto;
+    }
+
+    public List<PersonDTO> massCreation(MultipartFile file) throws Exception {
+        logger.info("Importing people from : " + file.getOriginalFilename());
+        if(file.isEmpty()) throw new BadRequestException("Invalalid file, please select a valid file");
+
+       try(InputStream inputStream = file.getInputStream()) {
+            String fileName = Optional.ofNullable(file.getOriginalFilename())
+                    .orElseThrow(() -> {
+                        logger.error("File name is null");
+                        return new BadRequestException("File name is null");
+                    });
+
+           FileImporter importer = this.importer.getImporter(fileName);
+           List<Person> entities = importer.importFile(inputStream).stream()
+                   .map(dto -> repository.save(parseObject(dto, Person.class)))
+                   .toList();
+
+           return entities.stream().map(
+                   entity -> {
+                       var dto = parseObject(entity, PersonDTO.class);
+                       addHateoasLinks(dto);
+                       return dto;
+                   }
+           ).toList();
+        } catch (Exception e) {
+            throw new FileStorageException("Error importing file: " + e.getMessage());
+       }
+
     }
 
     public PersonDTO update(Long id, PersonDTO person) {
