@@ -4,6 +4,7 @@ import br.com.nelsonssoares.springreview.controllers.docs.PersonControllerInterf
 import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
 import br.com.nelsonssoares.springreview.services.PersonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -87,6 +89,17 @@ public class PersonController implements PersonControllerInterface {
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         var pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
         return ResponseEntity.ok(personService.findAByName(firstName, pageable));
+    }
+
+
+    @PostMapping(value = "/massCreation")
+    @Override
+    public List<PersonDTO> massCreation(@RequestParam("file") MultipartFile file) {
+        try {
+            return personService.massCreation(file);
+        } catch (BadRequestException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //    @PostMapping("/v2")
