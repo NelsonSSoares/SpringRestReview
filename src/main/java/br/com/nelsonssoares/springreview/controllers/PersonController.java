@@ -130,7 +130,7 @@ public class PersonController implements PersonControllerInterface {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(file);
     }
 
@@ -141,4 +141,4 @@ public class PersonController implements PersonControllerInterface {
 //        return personService.createV2(person);
 //    }
 
-}
+

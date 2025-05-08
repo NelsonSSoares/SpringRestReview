@@ -218,7 +218,11 @@ public class PersonService {
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
         dto.add(linkTo(methodOn(PersonController.class).findAllByName(dto.getFirstName(), 1, 12, "asc")).withRel("findAByName").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class)).slash("massCreation").withRel("massCreation").withType("POST"));
-        dto.add(linkTo(methodOn(PersonController.class)).exportFile(1,12,"asc", MyMediaTypes.APPLICATION_XLSX)).withRel("findAll").withType("GET");
+        try {
+            dto.add(linkTo(methodOn(PersonController.class).exportFile(1,12,"asc", null)).withRel("exportFile").withType("GET").withTitle("Export File"));
+        } catch (BadRequestException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private PagedModel<EntityModel<PersonDTO>> buildPagedModel(Pageable pageable, Page<Person> people) {
