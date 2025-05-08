@@ -190,6 +190,7 @@ public class PersonService {
         dto.add(linkTo(methodOn(PersonController.class).update(dto.getId(), dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
         dto.add(linkTo(methodOn(PersonController.class).findAllByName(dto.getFirstName(), 1, 12, "asc")).withRel("findAByName").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class)).slash("massCreation").withRel("massCreation").withType("POST"));
     }
 
     private PagedModel<EntityModel<PersonDTO>> buildPagedModel(Pageable pageable, Page<Person> people) {
