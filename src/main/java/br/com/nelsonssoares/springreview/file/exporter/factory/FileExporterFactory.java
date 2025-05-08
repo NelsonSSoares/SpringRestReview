@@ -26,7 +26,7 @@ public class FileExporterFactory {
     @Autowired
     private ApplicationContext context;
 
-    public FileExporter getImporter(String acceptHeader) throws Exception{
+    public FileExporter getExporter(String acceptHeader) throws Exception{
 
 
         logger.info("File name: {}", acceptHeader);

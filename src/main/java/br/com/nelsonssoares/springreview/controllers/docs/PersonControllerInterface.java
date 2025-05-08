@@ -1,11 +1,15 @@
 package br.com.nelsonssoares.springreview.controllers.docs;
 
 import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
+import br.com.nelsonssoares.springreview.file.exporter.MyMediaTypes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.coyote.BadRequestException;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
@@ -86,7 +90,7 @@ public interface PersonControllerInterface {
     @PutMapping("/{id}")
     PersonDTO update(@PathVariable("id") Long id, @RequestBody PersonDTO person);
 
-    @Operation(summary = "Find all people",
+    @Operation(summary = "Delete people",
             tags = {"People"}, responses = {
             @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
             @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
@@ -142,5 +146,25 @@ public interface PersonControllerInterface {
             @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
     })
     List<PersonDTO> massCreation(MultipartFile file);
+
+    @Operation(summary = "Export a page of people in XLSX or CSV format",
+            tags = {"People"}, responses = {
+            @ApiResponse(description = "Success", responseCode = "200", content = {
+                    @Content(mediaType = MyMediaTypes.APPLICATION_XLSX),
+                    @Content(mediaType = MyMediaTypes.APPLICATION_CSV),
+
+            }),
+            @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
+            @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+            @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+            @ApiResponse(description = "People not found", responseCode = "404", content = @Content),
+            @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
+    })
+    ResponseEntity<Resource> exportFile(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction,
+            HttpServletRequest request
+    ) throws BadRequestException;
 
 }

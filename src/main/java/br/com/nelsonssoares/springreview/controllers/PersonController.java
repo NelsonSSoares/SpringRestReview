@@ -2,15 +2,20 @@ package br.com.nelsonssoares.springreview.controllers;
 
 import br.com.nelsonssoares.springreview.controllers.docs.PersonControllerInterface;
 import br.com.nelsonssoares.springreview.domain.dtos.v1.PersonDTO;
+import br.com.nelsonssoares.springreview.file.exporter.MyMediaTypes;
 import br.com.nelsonssoares.springreview.services.PersonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +28,7 @@ import static org.springframework.http.MediaType.*;
 //@CrossOrigin Habilita o CORS de forma global
 //@CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping(value="api/person/v1", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE, APPLICATION_YAML_VALUE})
+@RequestMapping(value = "api/person/v1", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE, APPLICATION_YAML_VALUE})
 @Tag(name = "People", description = "Endpoint for people management")
 public class PersonController implements PersonControllerInterface {
 
@@ -32,7 +37,7 @@ public class PersonController implements PersonControllerInterface {
     private PersonService personService;
 
 
-  //  @CrossOrigin(origins = "http://localhost:8080") // Habilita o CORS apenas para esse endpoint
+    //  @CrossOrigin(origins = "http://localhost:8080") // Habilita o CORS apenas para esse endpoint
     @GetMapping("/{id}")
     @Override
     public PersonDTO findById(@PathVariable("id") Long id) {
@@ -50,7 +55,7 @@ public class PersonController implements PersonControllerInterface {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "12") Integer size,
             @RequestParam(value = "direction", defaultValue = "asc") String direction
-    ){
+    ) {
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         var pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
         return ResponseEntity.ok(personService.findAll(pageable));
@@ -79,13 +84,14 @@ public class PersonController implements PersonControllerInterface {
     public PersonDTO disablePerson(@PathVariable("id") Long id) {
         return personService.disablePerson(id);
     }
+
     @Override
     public ResponseEntity<PagedModel<EntityModel<PersonDTO>>> findAllByName(
             @PathVariable(value = "firstName") String firstName,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "12") Integer size,
             @RequestParam(value = "direction", defaultValue = "asc") String direction
-    ){
+    ) {
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         var pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
         return ResponseEntity.ok(personService.findAByName(firstName, pageable));
@@ -100,6 +106,34 @@ public class PersonController implements PersonControllerInterface {
         } catch (BadRequestException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping(value = "/exportFile", produces = {
+            MyMediaTypes.APPLICATION_XLSX,
+            MyMediaTypes.APPLICATION_CSV,
+    })
+    @Override
+    public ResponseEntity<Resource> exportFile(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                               @RequestParam(value = "size", defaultValue = "12") Integer size,
+                                               @RequestParam(value = "direction", defaultValue = "asc") String direction,
+                                              HttpServletRequest request) throws BadRequestException {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        var pageable = PageRequest.of(page, size, Sort.by(sortDirection, "firstName"));
+
+        String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+
+        Resource file = personService.exportFile(pageable, acceptHeader);
+
+        String  contentType = acceptHeader!= null ? acceptHeader : "application/octet-stream";
+        String fileExpension = MyMediaTypes.APPLICATION_XLSX.equalsIgnoreCase(acceptHeader) ? ".xlsx" : ".csv";
+        var fileName = "people_exported" + fileExpension;
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
+    }
+
     }
 
 //    @PostMapping("/v2")

@@ -7,6 +7,9 @@ import br.com.nelsonssoares.springreview.domain.repositories.PersonRepository;
 import br.com.nelsonssoares.springreview.exceptions.FileStorageException;
 import br.com.nelsonssoares.springreview.exceptions.RequiredObjectIsNullException;
 import br.com.nelsonssoares.springreview.exceptions.ResourceNotFoundException;
+import br.com.nelsonssoares.springreview.file.exporter.MyMediaTypes;
+import br.com.nelsonssoares.springreview.file.exporter.contract.FileExporter;
+import br.com.nelsonssoares.springreview.file.exporter.factory.FileExporterFactory;
 import br.com.nelsonssoares.springreview.file.importer.contract.FileImporter;
 import br.com.nelsonssoares.springreview.file.importer.factory.FileImporterFactory;
 import br.com.nelsonssoares.springreview.utils.mapper.custom.PersonMapperV2;
@@ -15,11 +18,13 @@ import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
@@ -48,6 +53,9 @@ public class PersonService {
     private FileImporterFactory importer;
 
     @Autowired
+    private FileExporterFactory exporter;
+
+    @Autowired
     private PersonMapperV2 converter;
 
     @Autowired
@@ -73,6 +81,25 @@ public class PersonService {
         //return Optional.ofNullable(parseObject(repository.findById(id), PersonDTO.class));
                 //.orElseThrow(() -> new ResourceNotFoundException("No person found"));
     }
+
+
+    public Resource exportFile(Pageable pageable, String acceptHeader) throws BadRequestException {
+
+        logger.info("Exporting file!");
+
+        var people = repository.findAll(pageable)
+                .map(entity -> parseObject(entity, PersonDTO.class))
+                .getContent();
+
+        try {
+            FileExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportFile(people);
+        } catch (Exception e) {
+            throw new RuntimeException("Error exporting file: " + e.getMessage());
+        }
+
+    }
+
 
     public PagedModel<EntityModel<PersonDTO>> findAll(Pageable pageable) {
 
@@ -191,6 +218,7 @@ public class PersonService {
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
         dto.add(linkTo(methodOn(PersonController.class).findAllByName(dto.getFirstName(), 1, 12, "asc")).withRel("findAByName").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class)).slash("massCreation").withRel("massCreation").withType("POST"));
+        dto.add(linkTo(methodOn(PersonController.class)).exportFile(1,12,"asc", MyMediaTypes.APPLICATION_XLSX)).withRel("findAll").withType("GET");
     }
 
     private PagedModel<EntityModel<PersonDTO>> buildPagedModel(Pageable pageable, Page<Person> people) {
