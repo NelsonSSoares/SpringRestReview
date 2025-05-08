@@ -1,10 +1,8 @@
 package br.com.nelsonssoares.springreview.file.exporter.factory;
 
 import br.com.nelsonssoares.springreview.file.exporter.contract.FileExporter;
+import br.com.nelsonssoares.springreview.file.exporter.impl.CSVExporter;
 import br.com.nelsonssoares.springreview.file.exporter.impl.XLSXExporter;
-import br.com.nelsonssoares.springreview.file.importer.contract.FileImporter;
-import br.com.nelsonssoares.springreview.file.importer.impl.CSVImporter;
-import br.com.nelsonssoares.springreview.file.importer.impl.XLSXImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
