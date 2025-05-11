@@ -125,8 +125,8 @@ public class PersonController implements PersonControllerInterface {
         Resource file = personService.exportFile(pageable, acceptHeader);
 
         String  contentType = acceptHeader!= null ? acceptHeader : "application/octet-stream";
-        String fileExpension = MyMediaTypes.APPLICATION_XLSX.equalsIgnoreCase(acceptHeader) ? ".xlsx" : ".csv";
-        var fileName = "people_exported" + fileExpension;
+        String fileExtension = MyMediaTypes.APPLICATION_XLSX.equalsIgnoreCase(acceptHeader) ? ".xlsx" : ".csv";
+        var fileName = "people_exported" + fileExtension;
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))

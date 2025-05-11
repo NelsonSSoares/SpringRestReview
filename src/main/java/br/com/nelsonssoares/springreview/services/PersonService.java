@@ -140,7 +140,7 @@ public class PersonService {
 
     public List<PersonDTO> massCreation(MultipartFile file) throws BadRequestException {
         logger.info("Importing people from : " + file.getOriginalFilename());
-        if(file.isEmpty()) throw new BadRequestException("Invalalid file, please select a valid file");
+        if(file.isEmpty()) throw new BadRequestException("Invalid file, please select a valid file");
 
        try(InputStream inputStream = file.getInputStream()) {
             String fileName = Optional.ofNullable(file.getOriginalFilename())
