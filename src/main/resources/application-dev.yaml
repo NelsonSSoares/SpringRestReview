@@ -1,11 +1,18 @@
+# Configuração para upload e download de arquivos
 file:
   upload-dir: C:\Users\Nelson\OneDrive\Área de Trabalho\Projetos\SpringBoot\springreview\files
   download-dir: C:\Users\Nelson\Downloads
   max-file-size: 200MB
   max-request-size: 215MB
 
+# Configuração de cors
 cors:
   originsPatterns: http://localhost:8080 , http://localhost:4200
+
+# Configuração Spring Mail
+email:
+  subject: "Default Subject"
+  message: "Default Message"
 
 spring:
   application:
@@ -26,6 +33,17 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+# Configurlçao de email
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
 
   # Configuração para download e upload do arquivo
   servlet:
@@ -53,3 +71,6 @@ spring:
     #   name: Nelson Soares
     #   email:
     #   url: https://nelsonssoares.com
+
+
+
