@@ -10,9 +10,9 @@ cors:
   originsPatterns: http://localhost:8080 , http://localhost:4200
 
 # Configuração Spring Mail
-email:
-  subject: "Default Subject"
-  message: "Default Message"
+#email:
+#  subject: "Default Subject"
+#  message: "Default Message"
 
 spring:
   application:
@@ -36,10 +36,13 @@ spring:
 
 # Configurlçao de email
   mail:
+    subject: "Default Subject"
+    message: "Default Message"
     host: smtp.gmail.com
     port: 587
     username: ${EMAIL_USERNAME}
     password: ${EMAIL_PASSWORD}
+    from: ${EMAIL_FROM}
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
