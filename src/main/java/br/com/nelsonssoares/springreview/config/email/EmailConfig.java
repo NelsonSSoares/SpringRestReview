@@ -19,4 +19,6 @@ public class EmailConfig {
     private String from;
     private boolean ssl;
 
+
+
 }
