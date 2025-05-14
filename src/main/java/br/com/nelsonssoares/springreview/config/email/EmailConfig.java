@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "spring.email")
+@ConfigurationProperties(prefix = "email")
 @Getter
 @Setter
 @NoArgsConstructor

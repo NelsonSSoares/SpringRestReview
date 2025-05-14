@@ -107,20 +107,35 @@ public class EmailSender implements Serializable {
         this.attachment = null;
     }
 
-    // cria um arraylist de InternetAddress com os endereços de email
     private ArrayList<InternetAddress> getRecipients(String to) {
         String toWithoutSpaces = to.replaceAll("\\s", "");
         StringTokenizer tok = new StringTokenizer(toWithoutSpaces, ";");
         ArrayList<InternetAddress> recipientsList = new ArrayList<>();
-        while (tok.hasMoreElements()) {
+        while (tok.hasMoreTokens()) {
             String email = tok.nextToken();
             try {
-                recipientsList.add(new InternetAddress(tok.nextElement().toString()));
+                recipientsList.add(new InternetAddress(email));
             } catch (AddressException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Endereço de e-mail inválido: " + email, e);
             }
         }
         return recipientsList;
     }
+
+    // cria um arraylist de InternetAddress com os endereços de email
+//    private ArrayList<InternetAddress> getRecipients(String to) {
+//        String toWithoutSpaces = to.replaceAll("\\s", "");
+//        StringTokenizer tok = new StringTokenizer(toWithoutSpaces, ";");
+//        ArrayList<InternetAddress> recipientsList = new ArrayList<>();
+//        while (tok.hasMoreElements()) {
+//            String email = tok.nextToken();
+//            try {
+//                recipientsList.add(new InternetAddress(tok.nextElement().toString()));
+//            } catch (AddressException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        return recipientsList;
+//    }
 
 }

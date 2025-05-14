@@ -26,7 +26,7 @@ public class EmailController implements EmailControllerDocs {
         return new ResponseEntity<>("Email sent successfully", HttpStatus.OK);
     }
 
-    @PostMapping
+
     @Override
     public ResponseEntity<String> sendEmailwithAttachment(String emailReqestJson, MultipartFile file) {
         return null;
