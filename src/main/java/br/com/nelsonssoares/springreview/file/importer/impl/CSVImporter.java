@@ -32,7 +32,7 @@ public class CSVImporter implements FileImporter {
         return parseRecordsToPersonDTO(records);
     }
 
-    private List<PersonDTO> parseRecordsToPersonDTO(Iterable<CSVRecord> records) {
+    private List<PersonDTO>parseRecordsToPersonDTO(Iterable<CSVRecord> records) {
 
         List<PersonDTO> people = new ArrayList<>();
 
