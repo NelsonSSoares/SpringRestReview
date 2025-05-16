@@ -1,4 +1,4 @@
-package br.com.nelsonssoares.springreview.domain.auth;
+package br.com.nelsonssoares.springreview.domain.auth.entity;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
