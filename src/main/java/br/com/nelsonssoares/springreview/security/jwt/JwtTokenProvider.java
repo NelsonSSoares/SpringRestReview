@@ -1,4 +1,4 @@
-package br.com.nelsonssoares.springreview.config.security.jwt;
+package br.com.nelsonssoares.springreview.security.jwt;
 
 import br.com.nelsonssoares.springreview.domain.auth.dto.TokenDTO;
 import br.com.nelsonssoares.springreview.exceptions.InvalidJwtAuthenticationException;
@@ -52,15 +52,15 @@ public class JwtTokenProvider {
 
     private String getRefreshToken(String username, List<String> roles, Date now, Date validity) {
 
-        Date refreshTokenValidity = new Date(now.getTime() + validityInMilliseconds);
+        Date refreshTokenValidity = new Date(now.getTime() + (validityInMilliseconds * 3)); // Refresh token validity is 3 times the access token validity
 
         return JWT.create()
                 .withClaim("roles",roles)
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
                 .withSubject(username)
-                .sign(algorithm)
-                .toString();
+                .sign(algorithm);
+
     }
 
     private String getAccessToken(String username, List<String> roles, Date now, Date validity) {
@@ -73,8 +73,7 @@ public class JwtTokenProvider {
                 .withExpiresAt(validity)
                 .withSubject(username)
                 .withIssuer(issuerUrl)
-                .sign(algorithm)
-                .toString();
+                .sign(algorithm);
     }
 
     public Authentication getAuthentication(String token) {
