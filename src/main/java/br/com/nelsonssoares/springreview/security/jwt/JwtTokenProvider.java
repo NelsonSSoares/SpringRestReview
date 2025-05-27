@@ -93,13 +93,12 @@ public class JwtTokenProvider {
 
         String bearerToken = request.getHeader("Authorization");
 
-        if (StringUtils.isEmpty(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtils.isNoneBlank(bearerToken) && bearerToken.startsWith("Bearer ")) {
 
             return bearerToken.substring(7);
 
-        } else {
-            throw new InvalidJwtAuthenticationException("Invalid JWT Token");
         }
+        return null;
     }
 
     public boolean validateToken(String token) {
