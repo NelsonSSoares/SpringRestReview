@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Authentication", description = "Endpoints for user authentication")
 @RestController
@@ -34,6 +31,24 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
 
         return ResponseEntity.ok().body(token);
+    }
+
+    @Operation(summary = "Refresh token for authenticated user and returns a token")
+    @PutMapping("/refresh/{username}")
+    public ResponseEntity<?> refreshToken(@PathVariable("name") String username, @RequestHeader("Authorization") String refreshToken){
+        if (parameterAreInvalid(username, refreshToken))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid Client Request");
+
+        var token = service.refreshToken(username, refreshToken);
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+
+        return ResponseEntity.ok().body(token);
+    }
+
+    private boolean parameterAreInvalid(String username, String refreshToken) {
+        return StringUtils.isBlank(username) || StringUtils.isBlank(refreshToken) ||
+                !refreshToken.startsWith("Bearer ");
     }
 
     private static boolean credentialsIsInvalid(AccountCredentialsDTO credentials) {
