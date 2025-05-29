@@ -93,7 +93,7 @@ public class JwtTokenProvider {
 
         String bearerToken = request.getHeader("Authorization");
 
-        if (StringUtils.isNoneBlank(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtils.isNotBlank(bearerToken) && bearerToken.startsWith("Bearer ")) {
 
             return bearerToken.substring(7);
 
